@@ -1,0 +1,51 @@
+name: Merge Publications
+
+on:
+  push:
+    paths:
+      - 'bibs/**'
+  pull_request:
+    paths:
+      - 'bibs/**'
+    types: [closed]
+
+jobs:
+  merge-bib-files:
+    # Only run on merged PRs or direct pushes to master
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run merge script
+        run: |
+          python scripts/publications/merge.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet scripts/publications/AVITECH.bib; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add scripts/publications/AVITECH.bib
+          git commit -m "chore: auto-update merged publications [skip ci]"
+          git push

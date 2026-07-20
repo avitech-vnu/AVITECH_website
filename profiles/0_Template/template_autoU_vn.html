@@ -1,0 +1,21 @@
+<!-- You CANNOT edit this file -->
+
+<div id="external-content"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('https://raw.githubusercontent.com/avitech-vnu/AVITECH_website/main/profiles/MrA/MrA_vn.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Cannot load HTML file.');
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('external-content').innerHTML = data;
+        });
+});
+</script>
+
+<h2 style="border-bottom: 2px solid #0073e6; padding-bottom: 5px; margin-bottom: 15px;">Công bố khoa học:</h2>
+<script src="https://bibbase.org/show?bib=https://raw.githubusercontent.com/avitech-vnu/AVITECH_website/main/bibs/MrA.bib&jsonp=1"></script>
+
