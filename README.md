@@ -56,6 +56,7 @@ Update the following information:
 
 Before submitting your changes, please check that:
 
+- [ ] Your bib file have been created.
 - [ ] Your profile photo is a square image (1:1 ratio).
 - [ ] Your photo is in PNG format.
 - [ ] Your photo filename matches your folder name.
